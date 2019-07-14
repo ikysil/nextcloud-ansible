@@ -1,6 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+unless Vagrant.has_plugin?("vagrant-hostmanager")
+  raise "Please install vagrant-hostmanager with \nvagrant plugin install vagrant-hostmanager"
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -35,7 +39,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "target" do |target|
-    target.vm.network "private_network", ip: "10.100.0.3"
+    target.vm.network "private_network", ip: "10.100.1.3"
     target.vm.hostname = "target.private"
     target.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
@@ -44,7 +48,7 @@ Vagrant.configure("2") do |config|
       vb.customize ["modifyvm", :id, "--groups", "/nextcloud-ansible"]
 
       # bad I/O performance with Linux host otherwise
-      vb.customize ["storagectl", :id, "--name", "SCSI", "--hostiocache", "on"]
+      # vb.customize ["storagectl", :id, "--name", "SCSI", "--hostiocache", "on"]
 
       vb.customize ["modifyvm", :id, "--rtcuseutc", "on"]
       vb.customize ["modifyvm", :id, "--chipset", "ich9"]
@@ -52,7 +56,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "installer", autostart: true do |installer|
-    installer.vm.network "private_network", ip: "10.100.0.2"
+    installer.vm.network "private_network", ip: "10.100.1.2"
     installer.vm.hostname = "installer.private"
     installer.vm.synced_folder ENV["HOME"] + "/.ssh", "/var/host-ssh"
     installer.vm.provider "virtualbox" do |vb|
@@ -66,7 +70,7 @@ Vagrant.configure("2") do |config|
 
     installer.vm.provision "shell", privileged: true, inline: <<-SHELL
       apt-get update && apt-get -qy upgrade
-      apt-get install -qy --no-install-recommends ansible
+      apt-get install -qy --no-install-recommends ansible sshpass
     SHELL
   end
 

@@ -1,0 +1,8 @@
+---
+- name: Deploy Nextcloud server
+  hosts: "{{ target }}"
+  become: true
+  roles:
+    - role: nextcloud-meta
+  vars:
+    - target: vagrant

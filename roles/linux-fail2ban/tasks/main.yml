@@ -1,0 +1,25 @@
+- name: Install Fail2Ban
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - fail2ban
+  tags:
+    - packages
+    - fail2ban
+
+- name: Configure Fail2Ban
+  copy:
+    src: jail.local
+    dest: /etc/fail2ban/jail.local
+  notify: restart fail2ban
+  tags:
+    - fail2ban
+
+- name: Enable fail2ban
+  service:
+    name: fail2ban
+    enabled: true
+    state: stopped
+  tags:
+    - fail2ban

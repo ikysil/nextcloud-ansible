@@ -1,0 +1,11 @@
+dependencies:
+  - { role: linux-base }
+  - { role: linux-ntp }
+  - { role: linux-fail2ban }
+#  - { role: apache }
+#  - { role: database }
+#  - { role: nextcloud-centos7 }
+#  - { role: linux-php55-meta }
+#  - { role: nextcloud-postgresql }
+#  - { role: nextcloud-config }
+#  - { role: certbot }

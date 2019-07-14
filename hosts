@@ -1,0 +1,24 @@
+target.private ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+nextcloud.ikysil.name ansible_ssh_user=root ansible_ssh_host=193.70.38.200 ansible_ssh_private_key_file=/var/host-ssh/id_rsa
+
+[ubuntu_hosts]
+target.private
+nextcloud.ikysil.name
+
+[ubuntu_hosts:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[vagrant]
+target.private
+
+[vagrant:vars]
+owncloud_hostname=target.private
+letsencrypt_email=ikysil@target.private
+
+[production]
+nextcloud.ikysil.name
+
+[production:vars]
+owncloud_hostname=nextcloud.ikysil.name
+owncloud_database_hostname=localhost
+letsencrypt_email=ikysil@ikysil.name
